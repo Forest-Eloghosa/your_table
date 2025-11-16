@@ -1,0 +1,80 @@
+{% load static %}
+{# Bootstrap carousel partial. Uses Bootstrap's JS (already included in base.html). #}
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" aria-label="Promotional slideshow">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{{ MEDIA_URL }}menu_images/restaurant-slideshow1.jpg" class="d-block w-100" alt="Tomato bruschetta on toast">
+    </div>
+    <div class="carousel-item">
+      <img src="{{ MEDIA_URL }}menu_images/restaurant-slideshow2.jpg" class="d-block w-100" alt="Creamy parmesan pasta">
+    </div>
+    <div class="carousel-item">
+      <img src="{{ MEDIA_URL }}menu_images/restaurant-slideshow3.jpg" class="d-block w-100" alt="Grilled salmon with vegetables">
+    </div>
+    <div class="carousel-item">
+      <img src="{{ MEDIA_URL }}menu_images/restaurant-slideshow4.jpg" class="d-block w-100" alt="Grilled salmon with vegetables">
+    </div>
+    <div class="carousel-item">
+      <img src="{{ MEDIA_URL }}menu_images/restaurant-slideshow5.jpg" class="d-block w-100" alt="Grilled salmon with vegetables">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<script>
+// Minimal JS for slideshow behaviour using a `.show` class so CSS handles visibility.
+(function(){
+  const slides = document.querySelectorAll('.hero-slideshow .slide');
+  if (!slides.length) return;
+  let idx = 0;
+
+  // Initialize: add .show to the first slide, ensure others don't have it
+  slides.forEach((s, i) => s.classList.toggle('show', i === 0));
+
+  function show(i) {
+    slides[idx].classList.remove('show');
+    slides[idx].setAttribute('aria-hidden', 'true');
+    idx = (i + slides.length) % slides.length;
+    slides[idx].classList.add('show');
+    slides[idx].setAttribute('aria-hidden', 'false');
+
+    // Update live region with slide info: "Slide X of N: alt text"
+    const alt = (slides[idx].querySelector('img') || {}).alt || '';
+    const announce = document.getElementById('slideshow-announce');
+    if (announce) announce.textContent = `Slide ${idx + 1} of ${slides.length}: ${alt}`;
+  }
+
+  const prevBtn = document.querySelector('.hero-slideshow .prev');
+  const nextBtn = document.querySelector('.hero-slideshow .next');
+  if (prevBtn) prevBtn.addEventListener('click', () => show(idx - 1));
+  if (nextBtn) nextBtn.addEventListener('click', () => show(idx + 1));
+
+  // Auto-advance
+  const intervalMs = 5000;
+  let timer = setInterval(() => show(idx + 1), intervalMs);
+
+  // Pause auto-advance on mouse enter, resume on leave (small UX improvement)
+  const container = document.querySelector('.hero-slideshow');
+  if (container) {
+    container.addEventListener('mouseenter', () => clearInterval(timer));
+    container.addEventListener('mouseleave', () => timer = setInterval(() => show(idx + 1), intervalMs));
+    // Keyboard support: left/right arrows navigate the carousel when container is focused
+    container.addEventListener('keydown', (ev) => {
+      if (ev.key === 'ArrowLeft') { ev.preventDefault(); show(idx - 1); }
+      if (ev.key === 'ArrowRight') { ev.preventDefault(); show(idx + 1); }
+    });
+  }
+})();
+</script>

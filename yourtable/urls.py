@@ -22,16 +22,21 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Home page served by a simple TemplateView (renders templates/home.html)
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('about/', include('about.urls', namespace='about')),
     path('bookings/', include('bookings.urls')),
     path('menu/', include('menu.urls')),
     path('users/', include('users.urls')),
-    # Include Django's authentication URL patterns (login, logout, password reset, ...)
-    # These provide named URL patterns like 'login' and 'logout' used in templates.
     path("accounts/", include("allauth.urls")),
     path('reviews/', include('reviews.urls')),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    try:
+        # STATICFILES_DIRS may be a list of Path objects; convert to str for static().
+        static_root = settings.STATICFILES_DIRS[0]
+        urlpatterns += static(settings.STATIC_URL, document_root=str(static_root))
+    except Exception:
+        # Fallback: do nothing if STATICFILES_DIRS is not present or empty.
+        pass

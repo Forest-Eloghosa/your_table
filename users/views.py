@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def profile_view(request):
-    # Simple profile page - Profile object is auto-created by signal; template can access user.profile
     return render(request, 'registration/profile.html')
 
 
@@ -17,7 +16,7 @@ def signup(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Account created. You can now log in.')
-            return redirect('login')
+            return redirect('account_login')
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
