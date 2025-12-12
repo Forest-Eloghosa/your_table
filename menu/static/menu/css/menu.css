@@ -1,4 +1,6 @@
-
+body.menu-page {
+  background-color: #fff7f2;
+}
 
 /* Base container */
 .menu-container {
@@ -15,6 +17,10 @@
   margin-bottom: 1rem;
   border-bottom: 2px solid #ff7043;
   padding-bottom: 0.5rem;
+}
+
+.menu-category-container {
+  margin-bottom: 2.5rem;
 }
 
 /* Menu item cards */
@@ -46,6 +52,15 @@
 .menu-item .price {
   color: #ff7043;
   font-weight: 600;
+}
+
+.menu-item {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Buttons */
@@ -83,4 +98,36 @@
   height: auto;
   border-radius: 8px;
   object-fit: cover;
+}
+
+/* Thumbnail for menu list items */
+.menu-thumb {
+  width: 80px;
+  height: 80px; /* smaller fixed thumbnail */
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+
+/* Larger image used on menu item detail pages */
+.menu-detail-img {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.menu-thumb:hover,
+.menu-detail-img:hover {
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+
+/* Styles for the flat menu list */
+.menu-list .list-group-item {
+  padding: 0.75rem 1rem;
+}
+.menu-list .list-group-item img.menu-thumb {
+  flex-shrink: 0;
 }

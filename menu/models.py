@@ -4,6 +4,7 @@ from django.urls import reverse
 
 class MenuCategory(models.Model):
     name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
     slug = models.SlugField(unique=True)
 
     class Meta:
@@ -21,6 +22,7 @@ class MenuItem(models.Model):
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(upload_to='menu/', blank=True, null=True)
+    allergens = models.CharField(max_length=255, blank=True, help_text='Optional comma-separated list of allergens, e.g. "nuts, dairy, soy"')
     is_active = models.BooleanField(default=True)
 
     def get_absolute_url(self):

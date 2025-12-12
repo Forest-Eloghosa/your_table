@@ -1,41 +1,41 @@
 {% extends 'base.html' %}
-
-{% block title %}Menu{% endblock %}
 {% load static %}
 
-<link rel="stylesheet" href="{% static 'menu/css/menu.css' %}">
-{% block extra_css %}{% endblock %}
-
+{% block title %}Menu{% endblock %}
 {% block content %}
+
+
 <div class="menu-container">
   <h1 class="text-center mb-4">Our Menu</h1>
 
-  {% if categories %}
-    {% for category in categories %}
-      <section class="menu-category">
-        <h2>{{ category.name }}</h2>
-        <div class="menu-grid">
-          {% for item in category.items.all %}
-            {% if item.is_active %}
-              <article class="menu-item">
-                <a href="{{ item.get_absolute_url }}">
-                  {% if item.image %}
-                    <img src="{{ item.image.url }}" alt="{{ item.name }}" class="menu-thumb"/>
-                  {% else %}
-                    <img src="{% static 'menu/images/placeholder-food.svg' %}" alt="No image" class="menu-thumb"/>
-                  {% endif %}
-                  <h3>{{ item.name }}</h3>
-                </a>
-                <p class="price">€{{ item.price }}</p>
-                <p class="desc">{{ item.description|truncatechars:100 }}</p>
-              </article>
-            {% endif %}
-          {% endfor %}
+  {% for category in categories %}
+    <h2 class="mt-4">{{ category.name }}</h2>
+    <p class="text-muted">{{ category.description }}</p>
+
+    {% for item in category.items.all %}
+      <a href="{{ item.get_absolute_url }}"
+         class="list-group-item list-group-item-action my-2">
+
+        <div>
+          <div class="fw-bold">{{ item.name }}</div>
+
+          {% if item.allergens_list %}
+            <div class="mt-2 mb-1">
+              {% for allergen in item.allergens_list %}
+                <span class="badge bg-danger text-white me-1">{{ allergen }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="text-muted">€{{ item.price }}</div>
+          <div class="small text-truncate" style="max-width:38rem;">
+            {{ item.description|truncatechars:80 }}
+          </div>
         </div>
-      </section>
+      </a>
+    {% empty %}
+      <p>No items available in this category.</p>
     {% endfor %}
-  {% else %}
-    <p>No menu categories available.</p>
-  {% endif %}
+  {% endfor %}
 </div>
 {% endblock %}

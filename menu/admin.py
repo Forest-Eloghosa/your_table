@@ -10,10 +10,15 @@ class MenuCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(MenuItem)
 class MenuItemAdmin(admin.ModelAdmin):
-    list_display = ("name", "category", "price", "is_active")
+    list_display = ("name", "category", "price", "is_active", "allergens")
     list_filter = ("category", "is_active")
     prepopulated_fields = {"slug": ("name",)}
-    search_fields = ("name", "description")
+    search_fields = ("name", "description", "allergens")
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'slug', 'category', 'description', 'price', 'image', 'allergens', 'is_active')
+        }),
+    )
 
 
 @admin.register(Restaurant)
