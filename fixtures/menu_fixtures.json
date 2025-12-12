@@ -4,6 +4,7 @@
     "pk": 1,
     "fields": {
       "name": "Starters",
+      "description": "Light and flavorful dishes to begin your meal.",
       "slug": "starters"
     }
   },
@@ -11,8 +12,9 @@
     "model": "menu.menucategory",
     "pk": 2,
     "fields": {
-      "name": "Main Courses",
-      "slug": "main-courses"
+      "name": "Mains",
+      "description": "Hearty and delicious main dishes for every appetite.",
+      "slug": "mains"
     }
   },
   {
@@ -20,6 +22,7 @@
     "pk": 3,
     "fields": {
       "name": "Desserts",
+      "description": "Sweet treats to complete your dining experience.",
       "slug": "desserts"
     }
   },
@@ -28,6 +31,7 @@
     "pk": 4,
     "fields": {
       "name": "Drinks",
+      "description": "Refreshing beverages to complement your meal.",
       "slug": "drinks"
     }
   },
@@ -36,130 +40,129 @@
     "model": "menu.menuitem",
     "pk": 1,
     "fields": {
-      "category": 1,
-      "name": "Classic Tomato Bruschetta",
       "slug": "classic-tomato-bruschetta",
-      "description": "Toasted bread topped with marinated vine tomatoes, basil, and extra virgin olive oil.",
-      "price": "6.50",
-      "is_active": true,
-      "image": "media/menu_images/classic-tomato-bruschetta.jpg"
+      "name": "Classic Tomato Bruschetta",
+      "category": 1,
+      "price": "6.49",
+      "image": "menu_images/classic-tomato-bruschetta.jpg",
+      "description": "Grilled bread topped with fresh tomatoes, basil, garlic, and olive oil.",
+      "allergens": "gluten",
+      "is_active": true
     }
   },
   {
     "model": "menu.menuitem",
     "pk": 2,
     "fields": {
-      "category": 2,
-      "name": "Creamy Parmesan Pasta",
-      "slug": "creamy-parmesan-pasta",
-      "description": "Tagliatelle tossed in a creamy parmesan sauce, finished with cracked black pepper.",
-      "price": "12.50",
-      "is_active": true,
-      "image": "media/menu_images/creamy-parmesan-pasta.jpg"
+      "slug": "fresh-green-garden-salad",
+      "name": "Fresh Green Garden Salad",
+      "category": 1,
+      "price": "7.00",
+      "image": "menu_images/fresh-garden-salad.jpg",
+      "description": "A mix of fresh greens, tomatoes, cucumbers, and carrots with a light vinaigrette.",
+      "allergens": "none",
+      "is_active": true
     }
   },
+
   {
     "model": "menu.menuitem",
     "pk": 3,
     "fields": {
+      "slug": "creamy-parmesan-pasta",
+      "name": "Creamy Parmesan Pasta",
       "category": 2,
-      "name": "Grilled Lemon Salmon",
-      "slug": "grilled-lemon-salmon",
-      "description": "Pan-seared salmon filet with lemon butter and seasonal vegetables.",
-      "price": "16.00",
-      "is_active": true,
-      "image": "media/menu_images/grilled-lemon-salmon.jpg"
+      "price": "12.50",
+      "image": "menu_images/creamy-parmesan-pasta.jpg",
+      "description": "Tagliatelle tossed in a creamy parmesan sauce, finished with cracked black pepper.",
+      "allergens": "dairy",
+      "is_active": true
     }
   },
   {
     "model": "menu.menuitem",
     "pk": 4,
     "fields": {
-      "category": 1,
-      "name": "Fresh Garden Salad",
-      "slug": "fresh-garden-salad",
-      "description": "Crisp mixed leaves, cherry tomatoes, cucumber, and house vinaigrette.",
-      "price": "7.00",
-      "is_active": true,
-      "image": "media/menu_images/fresh-garden-salad.jpg"
+      "slug": "grilled-lemon-salmon",
+      "name": "Grilled Lemon Salmon",
+      "category": 2,
+      "price": "18.99",
+      "image": "menu_images/grilled-lemon-salmon.jpg",
+      "description": "Fresh salmon grilled to perfection with herbs, served with vegetables.",
+      "allergens": "fish",
+      "is_active": true
     }
   },
   {
     "model": "menu.menuitem",
     "pk": 5,
     "fields": {
-      "category": 2,
-      "name": "Classic Margherita Pizza",
       "slug": "classic-margherita-pizza",
-      "description": "Stone-baked pizza with San Marzano tomato, fresh mozzarella and basil.",
+      "name": "Classic Margherita Pizza",
+      "category": 2,
       "price": "11.50",
-      "is_active": true,
-      "image": "media/menu_images/classic-margherita-pizza.jpg"
+      "image": "menu_images/classic-margherita-pizza.jpg",
+      "description": "Traditional pizza with fresh tomatoes, mozzarella cheese, and basil.",
+      "allergens": "gluten, dairy",
+      "is_active": true
     }
   },
+
   {
     "model": "menu.menuitem",
     "pk": 6,
     "fields": {
-      "category": 3,
-      "name": "Warm Chocolate Brownie",
       "slug": "warm-chocolate-brownie",
-      "description": "Rich chocolate brownie served with vanilla ice cream.",
+      "name": "Warm Chocolate Brownie",
+      "category": 3,
       "price": "6.00",
-      "is_active": true,
-      "image":"media/menu_images/warm-chocolate-brownie.jpg"
+      "image": "menu_images/warm-chocolate-brownie.jpg",
+      "description": "Chocolate brownie served warm with vanilla ice cream.",
+      "allergens": "gluten, dairy, eggs",
+      "is_active": true
     }
   },
   {
     "model": "menu.menuitem",
     "pk": 7,
     "fields": {
-      "category": 3,
-      "name": "Strawberry Cheesecake",
       "slug": "strawberry-cheesecake",
-      "description": "Creamy cheesecake with a fresh strawberry topping.",
+      "name": "Strawberry Cheesecake",
+      "category": 3,
       "price": "6.50",
-      "is_active": true,
-      "image": "media/menu_images/strawberry-cheesecake.jpg"
+      "image": "menu_images/strawberry-cheesecake.jpg",
+      "description": "Classic cheesecake topped with fresh strawberries.",
+      "allergens": "gluten, dairy, eggs",
+      "is_active": true
     }
   },
+
   {
     "model": "menu.menuitem",
     "pk": 8,
     "fields": {
+      "slug": "chilled-freshly-squeezed-orange-juice",
+      "name": "Chilled Freshly Squeezed Orange Juice",
       "category": 4,
-      "name": "Cappuccino",
-      "slug": "cappuccino",
-      "description": "Smooth espresso with velvety milk foam.",
-      "price": "3.50",
-      "is_active": true,
-      "image": "media/menu_images/cappuccino-minimal.jpg"
+      "price": "3.99",
+      "image": "menu_images/orange-juice.jpg",
+      "description": "Cold pressed orange juice served fresh.",
+      "allergens": "none",
+      "is_active": true
     }
   },
   {
     "model": "menu.menuitem",
     "pk": 9,
     "fields": {
+      "slug": "cappuccino",
+      "name": "Cappuccino",
       "category": 4,
-      "name": "Freshly Squeezed Orange Juice",
-      "slug": "freshly-squeezed-orange-juice",
-      "description": "Cold pressed orange juice served with a slice of orange.",
-      "price": "3.00",
-      "is_active": true,
-      "image": "media/menu_images/orange-juice.jpg"
-    }
-  },
-  {
-    "model": "menu.menuitem",
-    "pk": 10,
-    "fields": {
-      "category": 3,
-      "name": "Seasonal Fruit Bowl",
-      "slug": "seasonal-fruit-bowl",
-      "description": "Selection of fresh seasonal fruits.",
-      "price": "4.50",
-      "is_active": true,
-      "image": "media/menu_images/seasonal-fruit-salad.jpg"
+      "price": "4.99",
+      "image": "menu_images/cappuccino-minimal.jpg",
+      "description": "Espresso with steamed milk and foam.",
+      "allergens": "dairy",
+      "is_active": true
     }
   }
 ]
