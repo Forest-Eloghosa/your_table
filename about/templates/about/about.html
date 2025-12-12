@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+
+{% block title %}About Us — YourTable{% endblock %}
+
+{% block content %}
+<div class="about-page">
+
+    <!-- Header Section -->
+    <section class="about-hero">
+        <h1>About Us</h1>
+        <p class="subtitle">Your modern reservation companion</p>
+    </section>
+
+  {% include 'partials/_slideshow.html' %}
+
+  <!-- Intro Section -->
+    <section class="about-intro">
+        <p>
+            Welcome to <strong>YourTable</strong>, your modern reservation companion designed to make dining simple, stress-free, and unforgettable.
+        </p>
+        <p>
+            We believe that every meal should feel like a moment worth enjoying. Whether you're celebrating, exploring new flavours, or simply relaxing with good food, finding the right place shouldn't be difficult.
+            YourTable helps you discover restaurants with ease — offering menus, descriptions, photos, and key information so you can choose the perfect spot for any occasion.
+        </p>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="about-mission">
+        <h2>Our Mission</h2>
+        <p>
+            To make reservations effortless while supporting top-quality restaurants that value great food, great service, and a welcoming atmosphere.
+        </p>
+    </section>
+
+    <!-- Why We Exist Section -->
+    <section class="about-why">
+        <h2>Why We Built This</h2>
+        <ul>
+            <li>Find restaurants that match your preferences</li>
+            <li>Explore new cuisines and dining experiences</li>
+            <li>Book confidently without stress</li>
+            <li>Enjoy meaningful and memorable meals</li>
+        </ul>
+    </section>
+
+    <!-- Partners Section -->
+    <section class="about-partners">
+        <h2>Our Promise</h2>
+        <p>
+            We partner with restaurants that share our passion for excellence and hospitality. YourTable continually expands its listings to give you access to the best dining options around you.
+        </p>
+    </section>
+
+    <!-- Founder Section -->
+    <section class="about-founder">
+        <h2>Our Story</h2>
+        <p>
+            Founded in <strong>2025</strong> by <strong>Forest Eloghosa</strong>, YourTable is built on the belief that great food deserves the perfect setting.
+            We’re here to help you find it.
+        </p>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="about-cta">
+        <a href="{% url 'home' %}" class="btn btn-primary cta-button" role="button">Start Exploring</a>
+    </section>
+
+</div>
+{% endblock %}

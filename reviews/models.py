@@ -11,3 +11,24 @@ class Review(models.Model):
 
 	def __str__(self):
 		return f"Review({self.user}, {self.rating})"
+
+
+class ReviewHistory(models.Model):
+	ACTIONS = [
+		('created', 'Created'),
+		('updated', 'Updated'),
+		('deleted', 'Deleted'),
+	]
+
+	review = models.ForeignKey(Review, null=True, blank=True, on_delete=models.SET_NULL, related_name='history')
+	review_pk = models.IntegerField()
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
+	action = models.CharField(max_length=10, choices=ACTIONS)
+	timestamp = models.DateTimeField(auto_now_add=True)
+	data = models.JSONField(null=True, blank=True)
+
+	class Meta:
+		ordering = ['-timestamp']
+
+	def __str__(self):
+		return f"{self.get_action_display()} review {self.review_pk} at {self.timestamp.isoformat()}"

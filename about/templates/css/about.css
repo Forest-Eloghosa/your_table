@@ -1,0 +1,51 @@
+.about-page {
+    max-width: 900px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+.about-hero {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.about-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.about-hero .subtitle {
+    font-size: 1.2rem;
+    color: #777;
+}
+
+.about-mission, .about-why, .about-partners, .about-founder {
+    margin-top: 40px;
+}
+
+.about-mission h2,
+.about-why h2,
+.about-partners h2,
+.about-founder h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.about-why ul {
+    padding-left: 20px;
+}
+
+.cta-button {
+    display: inline-block;
+    margin-top: 40px;
+    padding: 12px 30px;
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #333;
+}
