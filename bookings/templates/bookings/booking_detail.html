@@ -15,10 +15,40 @@
     <p><strong>Special Request:</strong> {{ booking.special_requests }}</p>
   </div>
 
-  <a href="{% url 'bookings:booking_update' booking.pk %}" class="btn btn-custom">Edit</a>
+  <a href="{% url 'bookings:booking_update' booking.pk %}" class="btn btn-primary">Edit</a>
   <a href="{% url 'bookings:booking_delete' booking.pk %}" class="btn btn-danger ms-2">Cancel</a>
 
   <br><br>
-  <a href="{% url 'bookings:booking_list' %}">Back to Bookings</a>
+  <a class="btn btn-secondary" href="{% url 'bookings:booking_list' %}">Back to Bookings</a>
+</div>
+<!-- User history for changes they made -->
+<div class="container mt-4">
+  <h4>Your recent changes to this booking</h4>
+  {% if user_history %}
+    <ul class="list-group">
+      {% for h in user_history %}
+        <li class="list-group-item">
+          <div class="d-flex justify-content-between">
+            <div>
+              <strong>{{ h.action_display }}</strong>
+              {% if h.username %}
+                <span class="text-muted"> by {{ h.username }}</span>
+              {% else %}
+                <span class="text-muted"> by you</span>
+              {% endif %}
+              <div class="small text-muted">{{ h.timestamp|date:"Y-m-d H:i" }}</div>
+            </div>
+            {% if h.data_pretty %}
+            <div style="max-width:45%;">
+              <pre class="small bg-light p-3 rounded" style="white-space:pre-wrap;word-wrap:break-word;">{{ h.data_pretty|escape }}</pre>
+            </div>
+            {% endif %}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-muted">You have not made any changes to this booking recently.</p>
+  {% endif %}
 </div>
 {% endblock %}

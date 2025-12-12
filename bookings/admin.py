@@ -10,6 +10,7 @@ from .models import (
     CancellationPolicy,
     Cancellation,
     SpecialOffer,
+    BookingHistory,
 )
 
 # Register your models here.
@@ -65,4 +66,11 @@ class CancellationAdmin(admin.ModelAdmin):
 @admin.register(SpecialOffer)
 class SpecialOfferAdmin(admin.ModelAdmin):
     list_display = ("restaurant", "discount_percentage", "valid_from", "valid_until")
+
+
+@admin.register(BookingHistory)
+class BookingHistoryAdmin(admin.ModelAdmin):
+    list_display = ("id", "booking_pk", "user", "action", "timestamp")
+    list_filter = ("action", "timestamp")
+    readonly_fields = ("booking", "booking_pk", "user", "action", "timestamp", "data")
 

@@ -10,18 +10,27 @@
   {% if bookings %}
     {% for booking in bookings %}
       <div class="booking-card">
-        <h3>Booking #{{ booking.id }} — for {{ booking.guests }} guests</h3>
-        <p><strong>Restaurant:</strong> {{ booking.restaurant.name }}</p>
-        <p><strong>Date:</strong> {{ booking.date|date:"Y-m-d" }}</p>
-        <p><strong>Time:</strong> {{ booking.date|date:"H:i" }}</p>
-        <p><strong>Special Request:</strong> {{ booking.special_requests }}</p>
-        <a href="{% url 'bookings:booking_detail' booking.pk %}" class="btn btn-custom mt-2">View</a>
+        <h3>
+          Booking #{{ booking.id }} — for {{ booking.guests }} guests
+          {% if booking.is_deleted %}
+            <span class="badge bg-secondary ms-2">Already deleted</span>
+          {% endif %}
+        </h3>
+        <p class="{% if booking.is_deleted %}text-muted{% endif %}"><strong>Restaurant:</strong> {{ booking.restaurant.name }}</p>
+        <p class="{% if booking.is_deleted %}text-muted{% endif %}"><strong>Date:</strong> {{ booking.date|date:"Y-m-d" }}</p>
+        <p class="{% if booking.is_deleted %}text-muted{% endif %}"><strong>Time:</strong> {{ booking.date|date:"H:i" }}</p>
+        <p class="{% if booking.is_deleted %}text-muted{% endif %}"><strong>Special Request:</strong> {{ booking.special_requests }}</p>
+        {% if not booking.is_deleted %}
+          <a href="{% url 'bookings:booking_detail' booking.pk %}" class="btn btn-primary mt-2">View</a>
+        {% else %}
+          <button class="btn btn-secondary mt-2" disabled>Already deleted</button>
+        {% endif %}
       </div>
     {% endfor %}
   {% else %}
-    <p>You have no bookings yet. <a href="{% url 'bookings:booking_create' %}">Make a booking</a>.</p>
+  <p>You have no bookings yet. <a href="{% url 'bookings:booking_create' %}" class="btn btn-outline-primary ms-2" role="button">Make a booking</a>.</p>
   {% endif %}
 
-  <a href="{% url 'bookings:booking_create' %}" class="btn btn-custom mt-3">Make a Booking</a>
+  <a href="{% url 'bookings:booking_create' %}" class="btn btn-primary mt-3">Make a Booking</a>
 </div>
 {% endblock %}

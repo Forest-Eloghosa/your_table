@@ -6,11 +6,23 @@
   <h1 class="booking-header">Cancel Booking</h1>
 
   <p>Are you sure you want to cancel this booking?</p>
-
-  <form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Yes, cancel booking</button>
-    <a href="{% url 'bookings:booking_list' %}" class="btn btn-secondary ms-2">No, go back</a>
-  </form>
+  <p>Canceling a booking is permanent and cannot be undone!</p>
+  {% if object.is_deleted %}
+    <div class="alert alert-warning">
+      This booking was already deleted on
+      {% if object.deleted_at %}
+        {{ object.deleted_at|date:"Y-m-d H:i" }}.
+      {% else %}
+        earlier.
+      {% endif %}
+    </div>
+    <a href="{% url 'bookings:booking_list' %}" class="btn btn-secondary">Back to bookings</a>
+  {% else %}
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Yes, cancel booking</button>
+      <a href="{% url 'bookings:booking_list' %}" class="btn btn-secondary ms-2">No, go back</a>
+    </form>
+  {% endif %}
 </div>
 {% endblock %}
