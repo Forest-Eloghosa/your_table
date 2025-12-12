@@ -7,7 +7,7 @@
   {% if user.is_authenticated %}
     <div class="profile-block">
       {% comment %} Show user profile image if available (Profile model may be added) {% endcomment %}
-      {% if user.profile.image.url %}
+      {% if user.profile and user.profile.image %}
         <img src="{{ user.profile.image.url }}" alt="{{ user.username }}'s profile" style="max-width:160px; display:block; margin-bottom:8px;"/>
       {% else %}
         <img src="{% static 'users/images/profile-placeholder.svg' %}" alt="Profile placeholder" style="max-width:160px; display:block; margin-bottom:8px;"/>
@@ -16,9 +16,9 @@
         <li>Username: {{ user.username }}</li>
         <li>Email: {{ user.email }}</li>
       </ul>
-      <p><a href="{% url 'users:signup' %}">Create another account</a></p>
+      <p><a href="{% url 'users:signup' %}" class="btn btn-outline-primary ms-2" role="button">Create another account</a></p>
     </div>
   {% else %}
-    <p>You are not logged in. <a href="{% url 'account_login' %}">Log in</a> or <a href="{% url 'users:signup' %}">Sign up</a>.</p>
+    <p>You are not logged in. <a href="{% url 'account_login' %}" class="btn btn-outline-primary ms-2" role="button">Log in</a> or <a href="{% url 'users:signup' %}" class="btn btn-outline-primary ms-2" role="button">Sign up</a>.</p>
   {% endif %}
 {% endblock %}

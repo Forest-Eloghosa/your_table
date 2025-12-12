@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Email confirmation sent | YourTable{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+      <h2>Confirmation email sent</h2>
+      <p>We have sent a confirmation email to your address. Please follow the link in that email to confirm your address.</p>
+      <a class="btn btn-primary" href="{% url 'home' %}">Return home</a>
+      <p class="mt-3">Want to <a href="{% url 'account_login' %}" class="btn btn-outline-primary ms-2" role="button">Log in</a> or <a href="{% url 'users:signup' %}" class="btn btn-outline-primary ms-2" role="button">Create another account</a>?</p>
+    </div>
+  </div>
+{% endblock %}

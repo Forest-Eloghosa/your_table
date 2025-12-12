@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'menu',
     'users',
     'reviews',
+    'about',
 
 ]
 
@@ -89,12 +90,21 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # Include the project-level `templates/` directory so TemplateView can find home.html
         'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
+            # Check project-level templates in `TEMPLATES['DIRS']` first so files
+            # in the top-level `templates/` directory override third-party app
+            # templates (e.g. django-allauth). Then fall back to app directories.
+            'loaders': [
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ],
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                # Provide MEDIA_URL in templates so media paths render correctly
+                'django.template.context_processors.media',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -107,16 +117,24 @@ WSGI_APPLICATION = 'yourtable.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# Use DATABASE_URL (Postgres on Heroku) when provided, otherwise fall back to local
-# SQLite for development. Using SQLite in production on Heroku is not supported because
-# the filesystem is ephemeral and dynos don't share the same SQLite file.
-if os.environ.get('DATABASE_URL'):
-    # Lazy import so local dev doesn't require dj-database-url unless DATABASE_URL set
-    import dj_database_url
 
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600)
-    }
+if os.environ.get('DATABASE_URL'):
+    try:
+        import dj_database_url
+
+        DATABASES = {
+            'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600)
+        }
+    except Exception:
+        # dj_database_url not installed or parse failed — fallback to local SQLite.
+        # Print a simple warning to stdout so devs see why the fallback happened.
+        print('WARNING: dj_database_url not available or DATABASE_URL parse failed; falling back to SQLite')
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
 else:
     DATABASES = {
         'default': {
@@ -185,30 +203,5 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# Logging: write Django errors and tracebacks to stdout so Heroku captures them in logs
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'stream': sys.stdout,
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'INFO',
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-        'django.request': {
-            'handlers': ['console'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-    },
-}
+# Using Django's default logging configuration (no custom LOGGING dict).
+

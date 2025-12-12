@@ -38,8 +38,7 @@
 
 </head>
 
-<body class="d-flex flex-column h-100 main-bg">
-
+<body class="d-flex flex-column h-100 main-bg {% block body_class %}{% endblock %}">
     <!-- Navbar -->
     {% include 'navbar.html' %}
 
@@ -49,6 +48,14 @@
     {% else %}
     <p class="text-end m-3">You are not logged in</p>
     {% endif %} 
+        <!-- Flash messages (auto-dismissed by static/js/main.js) -->
+        {% if messages %}
+        <div class="container mt-2">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
         {% block content %}
             <!-- Page-specific content goes here -->
         {% endblock %}
