@@ -197,14 +197,49 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Cloudinary / media storage: if Cloudinary credentials are provided in the
-# environment, configure Django to use Cloudinary for uploaded media files.
-# This is required on Heroku where Django does not serve MEDIA files itself.
+# Cloudinary / media storage: accept either a single `CLOUDINARY_URL` env var
+# or the three-piece vars `CLOUDINARY_CLOUD_NAME`,
+# `CLOUDINARY_API_KEY` and `CLOUDINARY_API_SECRET`.
+CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
+
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
+
+# If the three-piece vars are not present, try to parse CLOUDINARY_URL.
+if not (CLOUDINARY_STORAGE.get('CLOUD_NAME') and CLOUDINARY_STORAGE.get('API_KEY') and CLOUDINARY_STORAGE.get('API_SECRET')) and CLOUDINARY_URL:
+    try:
+        # Prefer the official parser from the cloudinary package when available.
+        from cloudinary.utils import parse_cloudinary_url
+        parsed = parse_cloudinary_url(CLOUDINARY_URL)
+        # Different cloudinary versions may return a dict or tuple/list.
+        if isinstance(parsed, dict):
+            CLOUDINARY_STORAGE['CLOUD_NAME'] = CLOUDINARY_STORAGE.get('CLOUD_NAME') or parsed.get('cloud_name')
+            CLOUDINARY_STORAGE['API_KEY'] = CLOUDINARY_STORAGE.get('API_KEY') or parsed.get('api_key')
+            CLOUDINARY_STORAGE['API_SECRET'] = CLOUDINARY_STORAGE.get('API_SECRET') or parsed.get('api_secret')
+        else:
+            # parsed may be a tuple: (cloud_name, api_key, api_secret, ...)
+            try:
+                cloud_name, api_key, api_secret = parsed[0], parsed[1], parsed[2]
+                CLOUDINARY_STORAGE['CLOUD_NAME'] = CLOUDINARY_STORAGE.get('CLOUD_NAME') or cloud_name
+                CLOUDINARY_STORAGE['API_KEY'] = CLOUDINARY_STORAGE.get('API_KEY') or api_key
+                CLOUDINARY_STORAGE['API_SECRET'] = CLOUDINARY_STORAGE.get('API_SECRET') or api_secret
+            except Exception:
+                pass
+    except Exception:
+        # Fallback simple parser for URLs like: cloudinary://<API_KEY>:<API_SECRET>@<CLOUD_NAME>
+        try:
+            if CLOUDINARY_URL.startswith('cloudinary://'):
+                core = CLOUDINARY_URL[len('cloudinary://'):]
+                creds, cloud = core.split('@', 1)
+                key, secret = creds.split(':', 1)
+                CLOUDINARY_STORAGE['CLOUD_NAME'] = CLOUDINARY_STORAGE.get('CLOUD_NAME') or cloud
+                CLOUDINARY_STORAGE['API_KEY'] = CLOUDINARY_STORAGE.get('API_KEY') or key
+                CLOUDINARY_STORAGE['API_SECRET'] = CLOUDINARY_STORAGE.get('API_SECRET') or secret
+        except Exception:
+            pass
 
 if CLOUDINARY_STORAGE.get('CLOUD_NAME') and CLOUDINARY_STORAGE.get('API_KEY') and CLOUDINARY_STORAGE.get('API_SECRET'):
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
