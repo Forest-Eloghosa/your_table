@@ -28,22 +28,13 @@
     <ul class="list-group">
       {% for h in user_history %}
         <li class="list-group-item">
-          <div class="d-flex justify-content-between">
-            <div>
-              <strong>{{ h.action_display }}</strong>
-              {% if h.username %}
-                <span class="text-muted"> by {{ h.username }}</span>
-              {% else %}
-                <span class="text-muted"> by you</span>
-              {% endif %}
-              <div class="small text-muted">{{ h.timestamp|date:"Y-m-d H:i" }}</div>
-            </div>
-            {% if h.data_pretty %}
-            <div style="max-width:45%;">
-              <pre class="small bg-light p-3 rounded" style="white-space:pre-wrap;word-wrap:break-word;">{{ h.data_pretty|escape }}</pre>
-            </div>
-            {% endif %}
-          </div>
+          <strong>{{ h.action_display }}</strong>
+          {% if h.username %}
+            <span class="text-muted"> by {{ h.username }}</span>
+          {% else %}
+            <span class="text-muted"> by you</span>
+          {% endif %}
+          <div class="small text-muted">{{ h.timestamp|date:"Y-m-d H:i" }}</div>
         </li>
       {% endfor %}
     </ul>
