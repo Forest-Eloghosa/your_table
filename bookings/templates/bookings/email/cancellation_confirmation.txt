@@ -1,0 +1,18 @@
+Subject: Booking Cancellation Confirmation - {{ restaurant_name }}
+
+Dear {{ user_name }},
+
+We confirm that your booking has been successfully cancelled.
+
+Booking Details:
+Restaurant: {{ restaurant_name }}
+Date & Time: {{ booking_date }}
+Number of Guests: {{ guests }}
+Special Requests: {{ special_requests }}
+
+If you need to make another reservation, please visit our website or contact us directly.
+
+Thank you for your understanding.
+
+Best regards,
+Your Table Team

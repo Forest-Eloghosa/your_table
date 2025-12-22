@@ -7,6 +7,7 @@ from django.http import Http404
 
 from .models import Booking, BookingHistory
 from .forms import BookingForm
+from .email_utils import send_booking_cancellation_email
 
 # Create your views here.
 class BookingListView(LoginRequiredMixin, ListView):
@@ -141,9 +142,15 @@ class BookingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return Booking.objects.all()
 
     def delete(self, request, *args, **kwargs):
+        # Get booking before deletion to send email
+        booking = self.get_object()
         # Perform delete (soft-delete implemented on model) and show confirmation
         resp = super().delete(request, *args, **kwargs)
-        messages.success(request, "Booking cancelled successfully.")
+        # Send cancellation email
+        if send_booking_cancellation_email(booking):
+            messages.success(request, "Booking cancelled successfully. A confirmation email has been sent.")
+        else:
+            messages.success(request, "Booking cancelled successfully.")
         return resp
 
 
