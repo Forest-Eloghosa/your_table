@@ -7,7 +7,24 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def profile_view(request):
-    return render(request, 'registration/profile.html')
+    """User profile showing all booking history and changes."""
+    from bookings.models import Booking, BookingHistory
+    
+    # Get all bookings (including soft-deleted) for the user
+    try:
+        base_manager = getattr(Booking, 'all_objects', Booking.objects)
+        bookings = base_manager.filter(user=request.user).order_by('-created_at')
+    except Exception:
+        bookings = Booking.objects.filter(user=request.user).order_by('-created_at')
+    
+    # Get all booking history for the user
+    history = BookingHistory.objects.filter(user=request.user).order_by('-timestamp')[:50]
+    
+    context = {
+        'bookings': bookings,
+        'booking_history': history,
+    }
+    return render(request, 'registration/profile.html', context)
 
 
 def signup(request):

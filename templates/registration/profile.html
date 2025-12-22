@@ -2,23 +2,142 @@
 {% load static %}
 
 {% block content %}
-  <h1>Your profile</h1>
-  <p>This is a minimal profile page.</p>
+<style>
+  .activity-item {
+    padding: 12px;
+    margin-bottom: 8px;
+    border-left: 3px solid #007bff;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+  }
+  .activity-item.deleted {
+    border-left-color: #dc3545;
+  }
+  .activity-item.created {
+    border-left-color: #28a745;
+  }
+  .activity-item.updated {
+    border-left-color: #ffc107;
+  }
+  .booking-status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .booking-status.active {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  .booking-status.cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+</style>
+
+<div class="container mt-4">
+  <h1>Your Profile</h1>
+  
   {% if user.is_authenticated %}
-    <div class="profile-block">
-      {% comment %} Show user profile image if available (Profile model may be added) {% endcomment %}
-      {% if user.profile and user.profile.image %}
-        <img src="{{ user.profile.image.url }}" alt="{{ user.username }}'s profile" style="max-width:160px; display:block; margin-bottom:8px;"/>
-      {% else %}
-        <img src="{% static 'users/images/profile-placeholder.svg' %}" alt="Profile placeholder" style="max-width:160px; display:block; margin-bottom:8px;"/>
-      {% endif %}
-      <ul>
-        <li>Username: {{ user.username }}</li>
-        <li>Email: {{ user.email }}</li>
-      </ul>
-      <p><a href="{% url 'users:signup' %}" class="btn btn-outline-primary ms-2" role="button">Create another account</a></p>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body text-center">
+            {% if user.profile and user.profile.image %}
+              <img src="{{ user.profile.image.url }}" alt="{{ user.username }}'s profile" class="img-fluid rounded-circle mb-3" style="max-width:160px;"/>
+            {% else %}
+              <img src="{% static 'users/images/profile-placeholder.svg' %}" alt="Profile placeholder" class="img-fluid rounded-circle mb-3" style="max-width:160px;"/>
+            {% endif %}
+            <h4>{{ user.username }}</h4>
+            <p class="text-muted">{{ user.email }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-8">
+        <!-- All Bookings Section -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">📅 All Your Bookings</h5>
+          </div>
+          <div class="card-body">
+            {% if bookings %}
+              <div class="list-group">
+                {% for booking in bookings %}
+                  <div class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <div>
+                        <h6 class="mb-1">
+                          Booking #{{ booking.id }} - {{ booking.restaurant.name }}
+                          {% if booking.is_deleted %}
+                            <span class="booking-status cancelled">Cancelled</span>
+                          {% else %}
+                            <span class="booking-status active">Active</span>
+                          {% endif %}
+                        </h6>
+                        <p class="mb-1">
+                          <strong>Date:</strong> {{ booking.date|date:"d M Y, H:i" }} | 
+                          <strong>Guests:</strong> {{ booking.guests }}
+                        </p>
+                        {% if booking.is_deleted %}
+                          <small class="text-muted">Cancelled on {{ booking.deleted_at|date:"d M Y, H:i" }}</small>
+                        {% else %}
+                          <small class="text-muted">Created {{ booking.created_at|date:"d M Y, H:i" }}</small>
+                        {% endif %}
+                      </div>
+                      <div>
+                        <a href="{% url 'bookings:booking_detail' booking.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <p class="text-muted">You haven't made any bookings yet.</p>
+              <a href="{% url 'bookings:booking_create' %}" class="btn btn-primary">Make Your First Booking</a>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Activity History Section -->
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">📋 Your Activity History</h5>
+            <small class="text-muted">Track all changes to your bookings</small>
+          </div>
+          <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+            {% if booking_history %}
+              {% for h in booking_history %}
+                <div class="activity-item {{ h.action }}">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <strong>
+                        {% if h.action == 'created' %}
+                          ✅ Created
+                        {% elif h.action == 'updated' %}
+                          ✏️ Updated
+                        {% elif h.action == 'deleted' %}
+                          ❌ Cancelled
+                        {% endif %}
+                      </strong>
+                      Booking #{{ h.booking_pk }}
+                    </div>
+                    <small class="text-muted">{{ h.timestamp|date:"d M Y, H:i" }}</small>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p class="text-muted">No activity recorded yet.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
     </div>
   {% else %}
-    <p>You are not logged in. <a href="{% url 'account_login' %}" class="btn btn-outline-primary ms-2" role="button">Log in</a> or <a href="{% url 'users:signup' %}" class="btn btn-outline-primary ms-2" role="button">Sign up</a>.</p>
+    <div class="alert alert-info">
+      <p>You are not logged in. <a href="{% url 'account_login' %}" class="btn btn-primary">Log in</a> or <a href="{% url 'users:signup' %}" class="btn btn-secondary">Sign up</a>.</p>
+    </div>
   {% endif %}
+</div>
 {% endblock %}
