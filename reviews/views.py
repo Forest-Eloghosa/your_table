@@ -37,8 +37,9 @@ class ReviewCreateView(CreateView):
 				'fields': fields,
 				'widgets': {
 					'guest_name': forms.TextInput(attrs={'placeholder': 'Your name', 'required': True}),
-					'rating': forms.Select(),
-					'comment': forms.Textarea(attrs={'rows': 4}),
+					'rating': forms.Select(choices=[(i, f'{i} Star{"s" if i != 1 else ""}') for i in range(1, 6)], attrs={'class': 'form-select'}),
+					'comment': forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}),
+					'image': forms.FileInput(attrs={'class': 'form-control'}),
 				}
 			})
 		})

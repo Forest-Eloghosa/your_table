@@ -5,8 +5,6 @@
 <div class="booking-container">
   <h1 class="booking-header">Cancel Booking</h1>
 
-  <p>Are you sure you want to cancel this booking?</p>
-  <p>Canceling a booking is permanent and cannot be undone!</p>
   {% if object.is_deleted %}
     <div class="alert alert-warning">
       This booking was already deleted on
@@ -18,11 +16,55 @@
     </div>
     <a href="{% url 'bookings:booking_list' %}" class="btn btn-secondary">Back to bookings</a>
   {% else %}
-    <form method="post">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-danger">Yes, cancel booking</button>
-      <a href="{% url 'bookings:booking_list' %}" class="btn btn-secondary ms-2">No, go back</a>
-    </form>
+    <!-- Trigger button -->
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
+      Cancel This Booking
+    </button>
+    <a href="{% url 'bookings:booking_list' %}" class="btn btn-secondary ms-2">Back to My Bookings</a>
+
+    <!-- Modal -->
+    <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-danger">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="cancelModalLabel">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>Warning: Permanent Cancellation
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger mb-3" role="alert">
+              <strong>⚠️ This action cannot be undone!</strong>
+            </div>
+            <p class="mb-2"><strong>Are you sure you want to cancel this booking?</strong></p>
+            <p class="text-muted">Canceling a booking is <strong>permanent</strong> and cannot be reversed. You will need to create a new booking if you change your mind.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              <i class="bi bi-arrow-left me-1"></i>No, Go Back
+            </button>
+            <form method="post" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash me-1"></i>Yes, Cancel Booking
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   {% endif %}
 </div>
+
+<style>
+  .modal-content.border-danger {
+    border: 3px solid #dc3545;
+  }
+  .modal-header.bg-danger {
+    background-color: #dc3545 !important;
+  }
+  .alert-danger {
+    border-left: 5px solid #dc3545;
+  }
+</style>
 {% endblock %}
