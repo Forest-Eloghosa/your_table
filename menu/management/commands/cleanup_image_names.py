@@ -18,13 +18,20 @@ class Command(BaseCommand):
             
             new_name = old_name
             
-            # If it starts with 'https:/' or 'http:/', extract the storage key
-            # Example: 'https:/res.cloudinary.com/dz2h47mhg/image/upload/menu_images/foo_xyz' 
-            #          -> 'menu_images/foo_xyz'
+            # If it starts with 'https:/' or 'http:/', extract just the filename part
+            # Example: 'https:/res.cloudinary.com/dz2h47mhg/image/upload/menu/classic-tomato-bruschetta_dzjjw2'
+            #          -> 'menu_images/classic-tomato-bruschetta.jpg' (estimated from original DB)
             if 'https:/' in new_name or 'http:/' in new_name:
-                match = re.search(r'(menu_images/[^/\s]+)', new_name)
-                if match:
-                    new_name = match.group(1)
+                # Extract the last part after the last '/'
+                parts = new_name.rstrip('/').split('/')
+                if parts:
+                    # Last part is something like 'classic-tomato-bruschetta_dzjjw2'
+                    # Try to reconstruct as 'menu_images/<base-name>.jpg'
+                    filename = parts[-1]
+                    # Remove the trailing hash/transform suffix (e.g., _dzjjw2)
+                    base = re.sub(r'_[a-z0-9]+$', '', filename)
+                    # Look up the original file in the MenuItem name or use a sensible default
+                    new_name = 'menu_images/{}.jpg'.format(base)
             
             if new_name != old_name:
                 try:
