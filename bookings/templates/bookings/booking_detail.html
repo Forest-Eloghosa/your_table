@@ -7,6 +7,11 @@
 
 <div class="booking-container">
   <h1 class="booking-header">Booking Details</h1>
+  {% if booking.is_deleted %}
+    <div class="alert alert-warning">
+      <strong>⚠️ This booking has been cancelled</strong> on {{ booking.deleted_at|date:"Y-m-d H:i" }}
+    </div>
+  {% endif %}
   <div class="booking-card">
     <h3>Booking #{{ booking.id }} — for {{ booking.guests }} guests</h3>
     <p><strong>Restaurant:</strong> {{ booking.restaurant.name }}</p>
@@ -15,8 +20,10 @@
     <p><strong>Special Request:</strong> {{ booking.special_requests }}</p>
   </div>
 
-  <a href="{% url 'bookings:booking_update' booking.pk %}" class="btn btn-primary">Edit</a>
-  <a href="{% url 'bookings:booking_delete' booking.pk %}" class="btn btn-danger ms-2">Cancel</a>
+  {% if not booking.is_deleted %}
+    <a href="{% url 'bookings:booking_update' booking.pk %}" class="btn btn-primary">Edit</a>
+    <a href="{% url 'bookings:booking_delete' booking.pk %}" class="btn btn-danger ms-2">Cancel</a>
+  {% endif %}
 
   <br><br>
   <a class="btn btn-secondary" href="{% url 'bookings:booking_list' %}">Back to Bookings</a>

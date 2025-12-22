@@ -27,6 +27,11 @@ class BookingDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     template_name = "bookings/booking_detail.html"
     context_object_name = "booking"
 
+    def get_queryset(self):
+        """Include soft-deleted bookings so users can view history of cancelled bookings."""
+        base_manager = getattr(Booking, 'all_objects', Booking.objects)
+        return base_manager.all()
+
     def test_func(self):
         booking = self.get_object()
         return booking.user == self.request.user
