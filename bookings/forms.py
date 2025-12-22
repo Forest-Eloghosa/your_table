@@ -7,16 +7,21 @@ from django.core.exceptions import ValidationError
 
 
 class BookingForm(forms.ModelForm):
-    # Use a SplitDateTimeField so the form expects two inputs (date + time)
-    date = forms.SplitDateTimeField(
-        widget=SplitDateTimeWidget(
-            date_attrs={'type': 'date'}, time_attrs={'type': 'time'}
+    # Use a single datetime-local input for simpler, well-labeled control
+    date = forms.DateTimeField(
+        widget=forms.DateTimeInput(
+            attrs={'type': 'datetime-local', 'class': 'form-control', 'id': 'id_date'}
         )
     )
 
     class Meta:
         model = Booking
         fields = ['restaurant', 'date', 'guests', 'special_requests']
+        widgets = {
+            'restaurant': forms.Select(attrs={'class': 'form-select'}),
+            'guests': forms.NumberInput(attrs={'class': 'form-control', 'min': 1, 'max': 20}),
+            'special_requests': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
 
     def clean_date(self):
         dt = self.cleaned_data.get('date')
