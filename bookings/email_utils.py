@@ -40,9 +40,12 @@ def send_booking_cancellation_email(booking):
             settings.DEFAULT_FROM_EMAIL,
             [booking.user.email],
             html_message=html_message,
-            fail_silently=False,
+            fail_silently=True,  # Don't crash if email fails
         )
         return True
     except Exception as e:
+        # Log the error but don't prevent booking cancellation
         print(f"Error sending cancellation email for booking {booking.pk}: {e}")
+        import traceback
+        traceback.print_exc()
         return False
