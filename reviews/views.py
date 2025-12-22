@@ -17,29 +17,34 @@ class ReviewListView(ListView):
 
 class ReviewCreateView(CreateView):
 	model = Review
-	fields = ['rating', 'comment', 'image']
 	template_name = 'reviews/review_form.html'
 	success_url = reverse_lazy('reviews:review_list')
 
-	def dispatch(self, request, *args, **kwargs):
-		if request.method == 'POST' and not request.user.is_authenticated:
-			return redirect_to_login(request.get_full_path())
-		return super().dispatch(request, *args, **kwargs)
+	def get_form_fields(self):
+		"""Return form fields based on authentication status."""
+		if self.request.user.is_authenticated:
+			return ['rating', 'comment', 'image']
+		else:
+			return ['guest_name', 'rating', 'comment', 'image']
+
+	def get_form_class(self):
+		"""Dynamically return form class with appropriate fields."""
+		from django import forms
+		fields = self.get_form_fields()
+		return type('ReviewForm', (forms.ModelForm,), {
+			'Meta': type('Meta', (), {
+				'model': Review,
+				'fields': fields,
+				'widgets': {
+					'guest_name': forms.TextInput(attrs={'placeholder': 'Your name', 'required': True}),
+					'rating': forms.Select(),
+					'comment': forms.Textarea(attrs={'rows': 4}),
+				}
+			})
+		})
 
 	def form_valid(self, form):
-		# Ensure the user has at least one completed (past) booking before allowing a review
-		Booking = apps.get_model('bookings', 'Booking')
-		has_completed = False
-		try:
-			base_manager = getattr(Booking, 'all_objects', Booking.objects)
-			has_completed = base_manager.filter(user=self.request.user, date__lt=timezone.now(), is_deleted=False).exists()
-		except Exception:
-			# If bookings app not available or check fails, default to False (deny)
-			has_completed = False
-
-		if not has_completed:
-			messages.error(self.request, "You can only leave a review after completing a booking.")
-			return redirect('reviews:review_list')
-
-		form.instance.user = self.request.user
+		if self.request.user.is_authenticated:
+			form.instance.user = self.request.user
+		# For anonymous users, guest_name is set by form
 		return super().form_valid(form)

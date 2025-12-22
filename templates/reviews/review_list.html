@@ -4,16 +4,16 @@
 
 {% block content %}
   <h2>Reviews</h2>
-  {% if user.is_authenticated %}
-    <a class="btn btn-primary mb-3" href="{% url 'reviews:review_create' %}">Leave a review</a>
-  {% else %}
-    <p><a href="{% url 'account_login' %}" class="btn btn-outline-primary ms-2" role="button">Log in</a> to leave a review.</p>
-  {% endif %}
+  <a class="btn btn-primary mb-3" href="{% url 'reviews:review_create' %}">Leave a review</a>
 
   {% for r in reviews %}
     <div class="card mb-2">
       <div class="card-body">
-        <h5 class="card-title">{{ r.user.username }} — {{ r.rating }}/5</h5>
+        {% if r.user %}
+          <h5 class="card-title">{{ r.user.get_full_name|default:r.user.username }} — {{ r.rating }}/5</h5>
+        {% else %}
+          <h5 class="card-title">{{ r.guest_name }} — {{ r.rating }}/5</h5>
+        {% endif %}
         {% if r.image %}
           <img src="{{ r.image.url }}" alt="Review image" style="max-width:200px; display:block; margin-bottom:8px;"/>
         {% else %}
