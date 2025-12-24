@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}404 — Page Not Found | YourTable{% endblock %}
+{% block page_title %}Page Not Found{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-center">
+          <img src="{% static 'images/YourTable-Logo.jpg' %}" alt="YourTable" height="56" class="mb-3">
+          <h1 class="fw-bold mb-2">Oops! We couldn’t find that page.</h1>
+          <p class="text-muted mb-4">The link may be broken or the page might have been moved.</p>
+
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="{% url 'home' %}" class="btn btn-primary">
+              Go to Home
+            </a>
+            <a href="{% url 'menu:menu_list' %}" class="btn btn-outline-primary">
+              Browse Menu
+            </a>
+            <a href="{% url 'bookings:booking_list' %}" class="btn btn-outline-secondary">
+              My Bookings
+            </a>
+            <a href="{% url 'reviews:review_list' %}" class="btn btn-outline-secondary">
+              Read Reviews
+            </a>
+          </div>
+
+          <hr class="my-4">
+          <p class="small text-muted">If you believe this is an error, please try again or return to the homepage.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card-body h1 { font-size: 1.75rem; }
+</style>
+{% endblock %}

@@ -40,3 +40,8 @@ if settings.DEBUG:
     except Exception:
         # Fallback: do nothing if STATICFILES_DIRS is not present or empty.
         pass
+
+    # Custom error handlers (active when DEBUG=False)
+    handler404 = 'yourtable.views.handler404'
+    handler500 = 'yourtable.views.handler500'
+    handler403 = 'yourtable.views.handler403'
