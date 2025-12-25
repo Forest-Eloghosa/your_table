@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block title %}{{ item.name }}{% endblock %}
+{% block page_title %}{{ item.name }}{% endblock %}
 
 {% block content %}
 <div class="menu-container">
@@ -36,5 +37,19 @@
   <a href="{% url 'menu:menu_list' %}" class="btn btn-primary mt-3">Back to Menu</a>
 
 </div>
+<style>
+  .menu-detail-img {
+    width: 100%;
+    max-width: 820px;
+    height: auto;
+    object-fit: contain;
+    background: #fff;
+  }
+  @media (max-width: 480px) {
+    .menu-detail-img {
+      max-height: 320px;
+    }
+  }
+</style>
 {% endblock %}
 
