@@ -26,9 +26,16 @@
   {% endif %}
 
   {% if item.image %}
-    <img src="{{ item.image.url }}" alt="{{ item.name }} - {{ item.category.name }}" class="img-thumbnail menu-detail-img mb-3" width="800" height="600" loading="lazy">
+    <img src="{{ item.image.url }}"
+         alt="{{ item.name }} - {{ item.category.name }}"
+         class="img-thumbnail menu-detail-img mb-3"
+         width="800" height="600" loading="lazy"
+         onerror="this.onerror=null;this.src='{{ STATIC_URL }}menu/images/placeholder-food.svg';">
   {% else %}
-    <img src="{% static 'menu/images/placeholder-food.svg' %}" alt="Placeholder image for {{ item.name }}" class="img-thumbnail menu-detail-img mb-3" width="800" height="600" loading="lazy">
+    <img src="{% static 'menu/images/placeholder-food.svg' %}"
+         alt="Placeholder image for {{ item.name }}"
+         class="img-thumbnail menu-detail-img mb-3"
+         width="800" height="600" loading="lazy">
   {% endif %}
 
   <p>{{ item.description }}</p>

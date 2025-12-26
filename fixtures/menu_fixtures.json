@@ -164,5 +164,19 @@
       "allergens": "dairy",
       "is_active": true
     }
+  },
+  {
+    "model": "menu.menuitem",
+    "pk": 10,
+    "fields": {
+      "slug": "seasonal-fruit-bowl",
+      "name": "Seasonal Fruit Bowl",
+      "category": 3,
+      "price": "4.50",
+      "image": "menu_images/seasonal-fruit-bowl.jpg",
+      "description": "Selection of fresh seasonal fruits.",
+      "allergens": "none",
+      "is_active": true
+    }
   }
 ]
