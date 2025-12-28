@@ -6,6 +6,20 @@
 {% block title %}About Us — YourTable{% endblock %}
 {% block page_title %}About{% endblock %}
 
+{% block extra_css %}
+<style>
+  #carouselExampleIndicators img {
+    object-fit: cover;
+    max-height: 420px;
+  }
+  @media (max-width: 480px) {
+    #carouselExampleIndicators img {
+      max-height: 260px;
+    }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="about-page">
 
@@ -19,6 +33,7 @@
 
   <!-- Intro Section -->
     <section class="about-intro">
+        <h2 class="visually-hidden">Introduction</h2>
         <p>
             Welcome to <strong>YourTable</strong>, your modern reservation companion designed to make dining simple, stress-free, and unforgettable.
         </p>
@@ -66,6 +81,7 @@
 
     <!-- CTA Section -->
     <section class="about-cta">
+        <h2 class="visually-hidden">Get Started</h2>
         <a href="{% url 'home' %}" class="btn btn-primary cta-button" role="button">Start Exploring</a>
     </section>
 

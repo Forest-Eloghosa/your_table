@@ -1,16 +1,42 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
-            <img src="{% static 'images/YourTable-Logo.jpg' %}" alt="YourTable Logo" height="56" class="me-2">
-            <span class="fw-bold text-primary">{% block page_title %}Home{% endblock %}</span>
+        <!-- Logo on left -->
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="{% static 'images/YourTable-Logo.jpg' %}" alt="YourTable Logo" height="80" class="d-none d-lg-inline" style="width: 80px; object-fit: contain;">
+            <img src="{% static 'images/YourTable-Logo.jpg' %}" alt="YourTable Logo" height="56" class="d-lg-none">
         </a>
+
+        <!-- Page title - visible on all devices -->
+        <span class="navbar-text mx-auto fw-bold text-primary" style="font-size: 1.5rem;">
+            {% with request.resolver_match.url_name as current %}
+                {% if current == 'menu_list' or current == 'menu_item_detail' %}
+                    Menu
+                {% elif current == 'booking_list' or current == 'booking_create' %}
+                    Bookings
+                {% elif current == 'review_list' or current == 'review_create' %}
+                    Reviews
+                {% elif current == 'about' %}
+                    About
+                {% elif current == 'profile' %}
+                    Profile
+                {% elif current == 'account_signup' or current == 'signup' %}
+                    Sign up
+                {% elif current == 'account_login' %}
+                    Login
+                {% else %}
+                    Home
+                {% endif %}
+            {% endwith %}
+        </span>
+
+        <!-- Dropdown/Menu on right -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav align-items-center ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'home' %}">Home</a>

@@ -4,6 +4,12 @@
 {% block title %}404 — Page Not Found | YourTable{% endblock %}
 {% block page_title %}Page Not Found{% endblock %}
 
+{% block extra_css %}
+<style>
+  .card-body h1 { font-size: 1.75rem; }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container py-5">
   <div class="row justify-content-center">
@@ -36,8 +42,4 @@
     </div>
   </div>
 </div>
-
-<style>
-  .card-body h1 { font-size: 1.75rem; }
-</style>
 {% endblock %}

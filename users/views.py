@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .forms import ProfilePictureForm
+from .models import Profile
 
 # Create your views here.
 
@@ -9,6 +11,19 @@ from django.contrib.auth.decorators import login_required
 def profile_view(request):
     """User profile showing all booking history and changes."""
     from bookings.models import Booking, BookingHistory
+    
+    # Ensure user has a profile (for existing users who don't have one yet)
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    
+    # Handle profile picture upload
+    if request.method == 'POST':
+        form = ProfilePictureForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile picture updated successfully!')
+            return redirect('users:profile')
+    else:
+        form = ProfilePictureForm(instance=profile)
     
     # Get all bookings (including soft-deleted) for the user
     try:
@@ -23,6 +38,7 @@ def profile_view(request):
     context = {
         'bookings': bookings,
         'booking_history': history,
+        'profile_form': form,
     }
     return render(request, 'registration/profile.html', context)
 

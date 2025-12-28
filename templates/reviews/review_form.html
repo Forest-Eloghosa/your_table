@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
 {% block title %}Leave a review | YourTable{% endblock %}
 
+{% block extra_css %}
+<style>
+  .form-select, .form-control {
+    border-radius: 0.375rem;
+  }
+  .card {
+    border-radius: 0.5rem;
+  }
+  label.form-label {
+    color: #333;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
   <div class="row justify-content-center">
@@ -43,16 +57,4 @@
     </div>
   </div>
 </div>
-
-<style>
-  .form-select, .form-control {
-    border-radius: 0.375rem;
-  }
-  .card {
-    border-radius: 0.5rem;
-  }
-  label.form-label {
-    color: #333;
-  }
-</style>
 {% endblock %}
