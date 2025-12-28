@@ -3,8 +3,8 @@
 
 {% block title %}Menu{% endblock %}
 {% block page_title %}Menu{% endblock %}
-{% block content %}
 
+{% block extra_css %}
 <style>
   .menu-item-link {
     text-decoration: none;
@@ -47,6 +47,9 @@
     box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
   }
 </style>
+{% endblock %}
+
+{% block content %}
 
 <div class="menu-container">
   <h1 class="text-center mb-4">Our Menu</h1>
