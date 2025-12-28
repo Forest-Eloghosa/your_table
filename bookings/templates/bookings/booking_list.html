@@ -29,7 +29,7 @@
       </div>
     {% endfor %}
   {% else %}
-  <p>You have no bookings yet. <a href="{% url 'bookings:booking_create' %}" class="btn btn-outline-primary ms-2" role="button">Make a booking</a>.</p>
+  <p>You have no bookings yet.</p>
   {% endif %}
 
   <a href="{% url 'bookings:booking_create' %}" class="btn btn-primary mt-3">Make a Booking</a>
