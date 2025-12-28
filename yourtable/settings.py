@@ -243,9 +243,8 @@ if not (CLOUDINARY_STORAGE.get('CLOUD_NAME') and CLOUDINARY_STORAGE.get('API_KEY
 
 if CLOUDINARY_STORAGE.get('CLOUD_NAME') and CLOUDINARY_STORAGE.get('API_KEY') and CLOUDINARY_STORAGE.get('API_SECRET'):
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    # Cloudinary delivery URLs require the resource type and upload path.
-    # Use the canonical base so joining with stored names yields valid URLs.
-    MEDIA_URL = f"https://res.cloudinary.com/{CLOUDINARY_STORAGE['CLOUD_NAME']}/image/upload/"
+    # Keep MEDIA_URL simple - cloudinary_storage will handle URL generation
+    MEDIA_URL = '/media/'
 
 # Email Configuration
 # Use console backend for now (prints to logs) until SMTP is configured
