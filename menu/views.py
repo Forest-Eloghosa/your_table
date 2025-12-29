@@ -3,19 +3,20 @@ from .models import MenuCategory, MenuItem
 
 
 class MenuListView(ListView):
+    """
+    Display all menu categories and their associated items.
+    Each menu item includes parsed allergy information.
+    """
     template_name = 'menu/menu_list.html'
     context_object_name = 'categories'
 
     def get_queryset(self):
-        # Prefetch items so we can annotate them in get_context_data
         return MenuCategory.objects.prefetch_related('items').all()
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
 
-        # For each item attach a parsed `allergens_list` attribute so templates
-        # don't rely on a custom templatetag. This avoids template tag import
-        # issues in some environments and keeps parsing centralized.
+            # Parse allergens for each menu item
         for cat in ctx.get('categories', []):
             for item in getattr(cat, 'items', []).all():
                 raw = (getattr(item, 'allergens', '') or '').strip()
@@ -28,6 +29,9 @@ class MenuListView(ListView):
 
 
 class MenuItemDetailView(DetailView):
+    """
+    Display details for a single menu item, including allergy information.
+    """
     model = MenuItem
     template_name = 'menu/menu_item_detail.html'
     context_object_name = "item"

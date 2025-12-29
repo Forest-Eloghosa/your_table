@@ -3,7 +3,11 @@ from .models import Profile
 
 
 class ProfilePictureForm(forms.ModelForm):
-    """Form for uploading a profile picture."""
+    """
+    Form for uploading a profile picture.
+    user: The user associated with the profile.
+    image: The profile image file.
+    """
     
     class Meta:
         model = Profile

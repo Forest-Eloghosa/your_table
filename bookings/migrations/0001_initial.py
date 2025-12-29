@@ -1,7 +1,7 @@
-import cloudinary.models
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
+import cloudinary.models
 
 
 class Migration(migrations.Migration):

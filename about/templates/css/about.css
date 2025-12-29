@@ -1,9 +1,17 @@
+/* ===========================
+      Global Styling
+   ============================
+*/
 .about-page {
     max-width: 900px;
     margin: auto;
     padding: 40px 20px;
 }
 
+/* ===========================
+      Header Section
+   ============================
+*/
 .about-hero {
     text-align: center;
     margin-bottom: 40px;
@@ -19,6 +27,10 @@
     color: #777;
 }
 
+/* ===========================
+      Mission/ Why/ Partners/ Founder Sections
+   ============================
+*/
 .about-mission, .about-why, .about-partners, .about-founder {
     margin-top: 40px;
 }
@@ -35,6 +47,10 @@
     padding-left: 20px;
 }
 
+/* ===========================
+        Call to Action Button
+   ============================
+*/
 .cta-button {
     display: inline-block;
     margin-top: 40px;

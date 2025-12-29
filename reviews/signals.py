@@ -2,9 +2,10 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.apps import apps
 from django.forms.models import model_to_dict
+from django.db.models.fields.files import FieldFile
 from datetime import date, datetime
 from decimal import Decimal
-from django.db.models.fields.files import FieldFile
+
 
 
 def sanitize_value(v):

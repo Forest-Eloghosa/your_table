@@ -4,13 +4,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from django.http import Http404
-
+from django.views.generic import TemplateView
 from .models import Booking, BookingHistory
 from .forms import BookingForm
 from .email_utils import send_booking_cancellation_email
 
 # Create your views here.
 class BookingListView(LoginRequiredMixin, ListView):
+    """
+    Display a list of bookings for the logged-in user, including soft-deleted ones.
+    Once booking is deleted, it remains visible in the list with an "Already deleted" note.
+    Use the `all_objects` manager
+    when available, otherwise fall back to default.
+    """
     model = Booking
     template_name = "bookings/booking_list.html"
     context_object_name = "bookings"
@@ -23,6 +29,10 @@ class BookingListView(LoginRequiredMixin, ListView):
 
 
 class BookingDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    """
+    Display details of a single booking, including soft-deleted ones.
+    Use the `all_objects` manager when available, otherwise fall back to default.
+    """
     model = Booking
     template_name = "bookings/booking_detail.html"
     context_object_name = "booking"
@@ -85,8 +95,9 @@ class BookingDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 
 class BookingCreateView(CreateView):
-    """Allow anonymous users to view the create page (so promotional carousel shows),
-    but require login for POST (submitting a booking). Anonymous POSTs are redirected
+    """
+    Allow anonymous users to view the create page (Which does not show promotional carousel),
+    this require login for POST (making a booking). Anonymous POSTs are redirected
     to the login page and after login the user can complete the booking.
     """
     model = Booking
@@ -111,6 +122,10 @@ class BookingCreateView(CreateView):
     
 
 class BookingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """
+    Allow users to update their own bookings.
+    update is not allowed for soft-deleted bookings.
+    """
     model = Booking
     template_name = "bookings/create_booking.html"
     form_class = BookingForm
@@ -129,6 +144,10 @@ class BookingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 class BookingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """
+    Allow users to delete their own bookings.
+    Deletion is implemented as a soft-delete.
+    """
     model = Booking
     template_name = "bookings/booking_delete.html"
     success_url = reverse_lazy("bookings:booking_list")
@@ -157,11 +176,13 @@ class BookingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         else:
             messages.success(request, "Booking cancelled successfully.")
         return resp
-
-
-from django.views.generic import TemplateView
-
+ 
+ 
 class BookingSuccessView(LoginRequiredMixin, TemplateView):
+    """
+    Display a success message after a booking is created.
+    using LoginRequiredMixin to ensure only logged-in users can see it.
+    """
     template_name = "bookings/success.html"
 
 

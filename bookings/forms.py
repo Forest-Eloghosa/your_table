@@ -1,12 +1,15 @@
 from django import forms
 from django.forms import widgets
 from django.forms.widgets import SplitDateTimeWidget
-from .models import Booking, BookingImage
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from .models import Booking, BookingImage
 
 
 class BookingForm(forms.ModelForm):
+    """
+    Form for creating and updating bookings.
+    """
     # Use a single datetime-local input for simpler, well-labeled control
     date = forms.DateTimeField(
         widget=forms.DateTimeInput(
@@ -31,6 +34,9 @@ class BookingForm(forms.ModelForm):
 
 
 class BookingImageForm(forms.ModelForm):
+    """
+    Form for uploading images related to a booking.
+    """
     class Meta:
         model = BookingImage
         fields = ['image']

@@ -3,6 +3,10 @@ from django.conf import settings
 
 
 class Review(models.Model):
+	"""
+	Customer review for the restaurant.
+	Can be associated with a registered user or submitted anonymously with a guest_name.
+	"""
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
 	guest_name = models.CharField(max_length=100, blank=True, help_text="Name for anonymous reviews")
 	rating = models.PositiveSmallIntegerField(default=5)
@@ -16,6 +20,9 @@ class Review(models.Model):
 
 
 class ReviewHistory(models.Model):
+	"""
+	Tracks changes to Review.
+	"""
 	ACTIONS = [
 		('created', 'Created'),
 		('updated', 'Updated'),

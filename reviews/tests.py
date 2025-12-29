@@ -4,6 +4,9 @@ from django.apps import apps
 
 
 class ReviewHistoryTests(TestCase):
+	"""
+	Test that ReviewHistory entries are created on review create and delete.
+	"""
 	def setUp(self):
 		User = get_user_model()
 		self.user = User.objects.create_user(username='tester', password='pass')

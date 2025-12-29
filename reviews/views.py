@@ -4,18 +4,28 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import redirect_to_login
 from django.contrib import messages
-from .models import Review
 from django.utils import timezone
 from django.apps import apps
+from .models import Review
 
 
 class ReviewListView(ListView):
+	"""
+	List all reviews.
+	Authenticated users see all reviews.
+	Anonymous users see only reviews with a guest_name.
+	"""
 	model = Review
 	template_name = 'reviews/review_list.html'
 	context_object_name = 'reviews'
 
 
 class ReviewCreateView(CreateView):
+	"""
+	Allow both authenticated and anonymous users to create reviews.
+	Authenticated users have their user field set automatically.
+	Anonymous users must provide a guest_name.
+	"""
 	model = Review
 	template_name = 'reviews/review_form.html'
 	success_url = reverse_lazy('reviews:review_list')
@@ -52,7 +62,9 @@ class ReviewCreateView(CreateView):
 
 
 class ReviewUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-	"""Allow authenticated users to edit their own reviews."""
+	"""
+	Allow authenticated users to edit their own reviews.
+	"""
 	model = Review
 	template_name = 'reviews/review_form.html'
 	success_url = reverse_lazy('reviews:review_list')
@@ -69,7 +81,9 @@ class ReviewUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 class ReviewDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-	"""Allow authenticated users to delete their own reviews."""
+	"""
+	Allow authenticated users to delete their own reviews.
+	"""
 	model = Review
 	template_name = 'reviews/review_confirm_delete.html'
 	success_url = reverse_lazy('reviews:review_list')

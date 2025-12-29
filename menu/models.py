@@ -3,6 +3,9 @@ from django.urls import reverse
 
 
 class MenuCategory(models.Model):
+    """
+    Represents a category of menu items, e.g. Appetizers, Main Courses, Desserts.
+    """
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     slug = models.SlugField(unique=True)
@@ -16,6 +19,10 @@ class MenuCategory(models.Model):
 
 
 class MenuItem(models.Model):
+    """
+    Represents a single item on the menu.
+    Fields include name, description, price, image, allergens, and active status.
+    """
     category = models.ForeignKey(MenuCategory, related_name='items', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
@@ -33,7 +40,8 @@ class MenuItem(models.Model):
 
 
 class Restaurant(models.Model):
-    """Minimal Restaurant model so other apps (bookings, specials) can reference it.
+    """
+    Minimal Restaurant model so other apps (bookings, specials) can reference it.
 
     Fields kept small to avoid migration conflicts; extend later as needed.
     """
