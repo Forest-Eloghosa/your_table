@@ -1,4 +1,5 @@
 {% load static %}
+{% static 'images/placeholder-food.svg' as PLACEHOLDER_FOOD %}
 
 <div id="aboutCarousel" class="carousel slide" data-bs-ride="carousel" aria-label="About page slideshow">
   <div class="carousel-indicators">
@@ -10,19 +11,19 @@
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="{{ MEDIA_URL }}menu_images/restaurant-slideshow1.jpg" class="d-block w-100" alt="Restaurant interior">
+      <img src="{% static 'images/restaurant-slideshow1.jpg' %}" class="d-block w-100" alt="Restaurant interior" onerror="this.onerror=null;this.src='{{ PLACEHOLDER_FOOD }}';">
     </div>
     <div class="carousel-item">
-      <img src="{{ MEDIA_URL }}menu_images/restaurant-slideshow2.jpg" class="d-block w-100" alt="Guests dining">
+      <img src="{% static 'images/restaurant-slideshow2.jpg' %}" class="d-block w-100" alt="Guests dining" onerror="this.onerror=null;this.src='{{ PLACEHOLDER_FOOD }}';">
     </div>
     <div class="carousel-item">
-      <img src="{{ MEDIA_URL }}menu_images/restaurant-slideshow3.jpg" class="d-block w-100" alt="Chef preparing food">
+      <img src="{% static 'images/restaurant-slideshow3.jpg' %}" class="d-block w-100" alt="Chef preparing food" onerror="this.onerror=null;this.src='{{ PLACEHOLDER_FOOD }}';">
     </div>
     <div class="carousel-item">
-      <img src="{{ MEDIA_URL }}menu_images/restaurant-slideshow4.jpg" class="d-block w-100" alt="Table setting">
+      <img src="{% static 'images/restaurant-slideshow4.jpg' %}" class="d-block w-100" alt="Table setting" onerror="this.onerror=null;this.src='{{ PLACEHOLDER_FOOD }}';">
     </div>
     <div class="carousel-item">
-      <img src="{{ MEDIA_URL }}menu_images/restaurant-slideshow5.jpg" class="d-block w-100" alt="Restaurant exterior">
+      <img src="{% static 'images/restaurant-slideshow5.jpg' %}" class="d-block w-100" alt="Restaurant exterior" onerror="this.onerror=null;this.src='{{ PLACEHOLDER_FOOD }}';">
     </div>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#aboutCarousel" data-bs-slide="prev">
